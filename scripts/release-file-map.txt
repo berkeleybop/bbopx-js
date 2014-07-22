@@ -1,0 +1,14 @@
+// Barista
+lib/bbopx/barista/response.js
+lib/bbopx/barista/client.js
+// Minerva
+lib/bbopx/minerva/manager.js
+lib/bbopx/minerva/requests.js
+// Noctua
+lib/bbopx/noctua/context.js
+lib/bbopx/noctua/draggable-canvas.js
+lib/bbopx/noctua/edit.js
+lib/bbopx/noctua/location-store.js
+lib/bbopx/noctua/widgets.js
+// The CommonJS Modules 1.0 construct for the end.
+lib/bbopx/commonjs-modules_1_0-shim.js

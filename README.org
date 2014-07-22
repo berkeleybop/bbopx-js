@@ -1,0 +1,8 @@
+#+TITLE: BBOPX JS README
+#+Options: num:nil
+#+STARTUP: odd
+#+Style: <style> h1,h2,h3 {font-family: arial, helvetica, sans-serif} </style>
+
+* Overview
+
+  BBOPX JS the experimental wing of the [[http://github.com/kltm/bbop-js][BBOP JS]] library.

@@ -1,0 +1,27 @@
+{
+    "name": "bbopx",
+    "version": "[% version %]",
+    "license": "BSD",
+    "description": "BBOPX JS namespace bundle.",
+    "author": {
+	"name": "Seth Carbon",
+	"email": "http://github.com/kltm/bbopx-js"
+    },
+    "repository": {
+      "type": "git",
+      "url": "http://github.com/kltm/bbopx-js"
+    },
+    "keywords": [
+	"amigo",
+	"amigo2",
+	"bbop",
+	"bbopx",
+	"solr",
+	"golr",
+	"gene ontology",
+	"cross-platform"
+    ],
+    "engines": {"node" : ">=0.10.0"},
+    "bin": {"wepl" : "./bin/web-repl.js"},
+    "main": "./bbopx.js"
+}
