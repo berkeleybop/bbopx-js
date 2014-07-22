@@ -78,11 +78,14 @@ docs:
 ### Create exportable JS bundle.
 ###
 
-.PHONY: bundle
-bundle:
+.PHONY: update-external
+update-external:
 	@echo "Using BBOP-JS at: $(BBOP_JS)"
 	cd $(BBOP_JS); make bundle
 	cp $(BBOP_JS)/staging/bbop.js ./external
+
+.PHONY: bundle
+bundle: update-external
 	./scripts/release-js.pl -v -i scripts/release-file-map.txt -o staging/bbopx.js -n bbopx -d lib/bbopx -r $(BBOPX_JS_VERSION)
 
 ###
@@ -90,7 +93,7 @@ bundle:
 ###
 
 .PHONY: bundle-uncompressed
-bundle-uncompressed:
+bundle-uncompressed: update-external
 	./scripts/release-js.pl -v -u -i scripts/release-file-map.txt -o staging/bbopx.js -n bbopx -d lib/bbopx -r $(BBOPX_JS_VERSION)
 
 ###

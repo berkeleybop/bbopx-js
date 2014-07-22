@@ -1,3 +1,5 @@
+// CommonJS Modules 1.0 wrapper.
+lib/bbopx/commonjs-modules_1_0-bbop.js
 // Barista
 lib/bbopx/barista/response.js
 lib/bbopx/barista/client.js

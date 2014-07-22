@@ -6,8 +6,9 @@
 
 ////
 
-// Load bbop.
+// Load bbopx.
 var bbop = require('bbop').bbop;
+var bbopx = require('bbopx').bbopx;
 var mr_t = new bbop.test();
 
 ///
@@ -23,7 +24,7 @@ var same = mr_t.is_same_atom;
 		"message":"Exception!",
 		"commentary":"blah"};
 
-     var resp = new bbop_rest_response_mmm(raw);
+     var resp = new bbopx.barista.response(raw);
 
      same(resp.okay(), true, 'viable response');
      same(resp.message_type(), 'error', 'm type');
@@ -46,7 +47,7 @@ var same = mr_t.is_same_atom;
 			"individuals":[]
 		       }
 	       };
-     var resp = new bbop_rest_response_mmm(raw);
+     var resp = new bbopx.barista.response(raw);
      
      same(resp.okay(), true, 'viable real response');
      same(resp.message_type(), 'success', 'success type');
