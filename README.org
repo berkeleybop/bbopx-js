@@ -7,6 +7,21 @@
 
   BBOPX JS the experimental wing of the [[http://github.com/kltm/bbop-js][BBOP JS]] library.
 
-** API
+** Usage
 
+   BBOPX has a slightly better though out shim, meaning that using in
+   a CommonJS environment is a little easier:
+
+  #+BEGIN_SRC javascript
+var bbopx = require('bbopx');
+  #+END_SRC
+
+   As opposed to BBOP's (currently odd) form:
+   
+  #+BEGIN_SRC javascript
+var bbop = require('bbop').bbop;
+  #+END_SRC
+
+
+** API
    More or less current API documentation can be found [[https://kltm.github.io/bbopx-js/][here]].

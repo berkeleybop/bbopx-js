@@ -8,7 +8,8 @@
 
 // Load bbop.
 var bbop = require('bbop').bbop;
-var bbopx = require('bbopx').bbopx;
+//var bbopx = require('bbopx').bbopx;
+var bbopx = require('bbopx');
 var mr_t = new bbop.test();
 
 ///
