@@ -1,6 +1,6 @@
 {
     "name": "bbopx",
-    "version": "[% version %]",
+    "version": "0.9.0",
     "license": "BSD",
     "description": "BBOPX JS namespace bundle.",
     "author": {
