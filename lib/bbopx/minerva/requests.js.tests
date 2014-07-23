@@ -20,8 +20,8 @@ var same = mr_t.is_same_atom;
 // 
 //(function(){
 
-     var reqs = new bbop.minerva.request_set('foo', 'information');
-     var req = new bbop.minerva.request('model', 'get');
+     var reqs = new bbopx.minerva.request_set('foo', 'information');
+     var req = new bbopx.minerva.request('model', 'get');
      req.model_id('123');
      reqs.add(req);
      var args = reqs.callable();
