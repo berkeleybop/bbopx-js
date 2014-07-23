@@ -6,3 +6,7 @@
 * Overview
 
   BBOPX JS the experimental wing of the [[http://github.com/kltm/bbop-js][BBOP JS]] library.
+
+** API
+
+   More or less current API documentation can be found [[https://kltm.github.io/bbopx-js/][here]].
