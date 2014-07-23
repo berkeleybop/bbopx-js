@@ -9,7 +9,7 @@
 
 ** Usage
 
-   BBOPX has a slightly better though out shim, meaning that using in
+   BBOPX has a slightly better thought out shim, meaning that using in
    a CommonJS environment is a little easier:
 
   #+BEGIN_SRC javascript
