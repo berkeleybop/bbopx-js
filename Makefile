@@ -121,7 +121,6 @@ patch-incr:
 .PHONY: npm
 npm: bundle
 	./scripts/release-npm.pl -v -i staging/bbopx.js -o npm/bbopx -r $(BBOPX_JS_VERSION)
-	npm unpublish bbopx@$(BBOPX_JS_VERSION)
 	npm publish npm/bbopx
 	make patch-incr
 
