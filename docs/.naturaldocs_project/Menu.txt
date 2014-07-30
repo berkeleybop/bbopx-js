@@ -46,10 +46,11 @@ Format: 1.51
 # --------------------------------------------------------------------------
 
 
-File: bbop_mme_manager2  (minerva/manager.js)
-File: bbop_mmm_requests.js  (minerva/requests.js)
-File: bbop_rest_response_mmm.js  (barista/response.js)
+File: bbopx.barista.response.js  (barista/response.js)
+File: bbopx.minerva.manager  (minerva/manager.js)
 File: noctua/edit.js  (noctua/edit.js)
+File: requests.js  (minerva/requests.js)
+File: user_check  (noctua/widgets.js)
 File: version.js  (version.js)
 
 Group: Index  {
