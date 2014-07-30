@@ -31,6 +31,9 @@ var bbop = require('bbop').bbop;
 
 * bbopx.barista.response
 
+  For readability, the original README.org org-mode doc may well work
+  better.
+
   This document seeks to describe the barista response. It is a work
   in progress that is evolving along with the current
   implementation. It should seek to document the ideal that we're
