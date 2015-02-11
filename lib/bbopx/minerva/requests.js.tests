@@ -2,8 +2,7 @@
 //// Some unit testing for bbop-mmm-requests.js
 ////
 //// Usage:
-////  rhino -modules static/bbop.js -opt -1 -f js/bbop-mmm-requests.js -f js/bbop-mmm-requests.js.tests -f -
-
+////  rhino -modules external/bbop.js -modules staging/bbopx.js -opt 1 -f lib/bbopx/minerva/requests.js -f lib/bbopx/minerva/requests.js.tests -f -
 ////
 
 // Load bbop.
