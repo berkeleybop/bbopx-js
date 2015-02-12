@@ -1,8 +1,14 @@
 ////
 //// Some unit testing for bbop-mmm-requests.js
 ////
-//// Usage:
-////  rhino -modules external/bbop.js -modules staging/bbopx.js -opt 1 -f lib/bbopx/minerva/requests.js -f lib/bbopx/minerva/requests.js.tests -f -
+//// Usage (rhino):
+//// : rhino -modules external/bbop.js -modules staging/bbopx.js -opt 1 -f lib/bbopx/minerva/requests.js -f lib/bbopx/minerva/requests.js.tests -f -
+////
+//// Usage (node, test only):
+//// : make bundle && NODE_PATH=external:staging node lib/bbopx/minerva/requests.js.tests
+////
+//// Usage (node, interactive debugging):
+//// : make bundle && TEST=lib/bbopx/minerva/requests.js.tests NODE_PATH=external:staging:lib/bpx/minerva node -e "eval(require('fs').readFileSync(process.env.TEST)+''); require('repl').start('> ')"
 ////
 
 // Load bbop.
@@ -19,25 +25,25 @@ var same = mr_t.is_same_atom;
 
 // 
 //(function(){
-
-     var reqs = new bbopx.minerva.request_set('foo', 'information');
-     var req = new bbopx.minerva.request('model', 'get');
-     req.model_id('123');
-     reqs.add(req);
-     var args = reqs.callable();
-     
-     same(args.token, 'foo', 'foo uid');
-     same(args.intention, 'information', 'information intent');
-     
-     var blob = args.requests;
-     var deblob = decodeURIComponent(blob);
-     var jsblob = bbop.json.parse(deblob);
-     same(jsblob.length, 1, 'one request');
-     same(jsblob[0].entity, 'model', 'model entity');
-     same(jsblob[0].operation, 'get', 'get model');
-     same(jsblob[0].arguments.modelId, '123', 'model 123');
-
-// })();
+    
+    var reqs = new bbopx.minerva.request_set('foo', 'information');
+    var req = new bbopx.minerva.request('model', 'get');
+    req.model_id('123');
+    reqs.add(req);
+    var args = reqs.callable();
+    
+    same(args.token, 'foo', 'foo uid');
+    same(args.intention, 'information', 'information intent');
+    
+    var blob = args.requests;
+    var deblob = decodeURIComponent(blob);
+    var jsblob = bbop.json.parse(deblob);
+    same(jsblob.length, 1, 'one request');
+    same(jsblob[0].entity, 'model', 'model entity');
+    same(jsblob[0].operation, 'get', 'get model');
+    same(jsblob[0].arguments.modelId, '123', 'model 123');
+    
+//})();
 
 ///
 /// End unit testing.
