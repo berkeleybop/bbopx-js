@@ -23,12 +23,56 @@ var mr_t = new bbop.test();
 
 var same = mr_t.is_same_atom;
 
+///
+/// Simple testing for request_variable.
+///
+
+(function(){
+    var rv = new bbopx.minerva.request_variable();
+    same(rv.value().length == 36, true,
+	 'like 8ccbf846-d7e8-4d86-9e5c-0b48827d178d');
+    same(rv.set_p(), false, 'not set');
+})();
+
+(function(){
+    var rv = new bbopx.minerva.request_variable('foo');
+    same(rv.value(), 'foo', 'constructor value');
+    same(rv.set_p(), true, 'set implicitly');
+})();
+
+(function(){
+    var rv = new bbopx.minerva.request_variable();
+    rv.value('foo');
+    same(rv.value(), 'foo', 'method value');
+    same(rv.set_p(), true, 'set explicitly');
+})();
+
+///
+/// Requests
+///
+
 // 
 //(function(){
+
+var i1_req = new bbopx.minerva.request('individual', 'create');
+i1_req.model('mid');
+i1_req.subject('GO:111');
+
+var f_req = new bbopx.minerva.request('edge', 'add');
+f_req.model(i1_req.model());
+
+//})();
+
+///
+/// Request sets
+///
+
+// 
+(function(){
     
     var reqs = new bbopx.minerva.request_set('foo', 'information');
     var req = new bbopx.minerva.request('model', 'get');
-    req.model_id('123');
+    req.model('123');
     reqs.add(req);
     var args = reqs.callable();
     
@@ -43,7 +87,7 @@ var same = mr_t.is_same_atom;
     same(jsblob[0].operation, 'get', 'get model');
     same(jsblob[0].arguments.modelId, '123', 'model 123');
     
-//})();
+})();
 
 ///
 /// End unit testing.
