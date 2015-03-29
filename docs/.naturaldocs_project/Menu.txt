@@ -46,11 +46,27 @@ Format: 1.51
 # --------------------------------------------------------------------------
 
 
-File: bbopx.barista.response.js  (barista/response.js)
-File: bbopx.minerva.manager  (minerva/manager.js)
-File: noctua/edit.js  (noctua/edit.js)
-File: requests.js  (minerva/requests.js)
-File: user_check  (noctua/widgets.js)
+Group: Minerva  {
+
+   File: manager.js  (minerva/manager.js)
+   File: requests.js  (minerva/requests.js)
+   }  # Group: Minerva
+
+Group: Barista  {
+
+   File: response.js  (barista/response.js)
+   File: client.js  (barista/client.js)
+   }  # Group: Barista
+
+Group: Noctua  {
+
+   File: context.js  (noctua/context.js)
+   File: draggable-canvas.js  (noctua/draggable-canvas.js)
+   File: edit.js  (noctua/edit.js)
+   File: location-store.js  (noctua/location-store.js)
+   File: widgets.js  (noctua/widgets.js)
+   }  # Group: Noctua
+
 File: version.js  (version.js)
 
 Group: Index  {
