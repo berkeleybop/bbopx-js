@@ -47,7 +47,7 @@ Format: 1.51
 
 
 File: bbopx.barista.response.js  (barista/response.js)
-File: bbopx.minerva.manager  (minerva/manager.js)
+File: minerva/manager.js  (minerva/manager.js)
 File: noctua/edit.js  (noctua/edit.js)
 File: requests.js  (minerva/requests.js)
 File: user_check  (noctua/widgets.js)
