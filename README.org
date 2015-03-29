@@ -27,7 +27,7 @@ var bbop = require('bbop').bbop;
 
 
 ** API
-   More or less current API documentation can be found [[https://kltm.github.io/bbopx-js/][here]].
+   More or less current API documentation can be found [[https://berkeleybop.github.io/bbopx-js/][here]].
 
 * bbopx.barista.response
 
