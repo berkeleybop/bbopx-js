@@ -1,6 +1,80 @@
-# There are 3 errors in this file.  Search for ERROR to find them.
+Format: 1.51
 
-Format: 1.51# You can add a title and sub-title to your menu like this:# Title: [project name]# SubTitle: [subtitle]# You can add a footer to your documentation like this:# Footer: [text]# If you want to add a copyright notice, this would be the place to do it.# You can add a timestamp to your documentation like one of these:# Timestamp: Generated on month day, year# Timestamp: Updated mm/dd/yyyy# Timestamp: Last updated mon day##   m     - One or two digit month.  January is "1"#   mm    - Always two digit month.  January is "01"#   mon   - Short month word.  January is "Jan"#   month - Long month word.  January is "January"#   d     - One or two digit day.  1 is "1"#   dd    - Always two digit day.  1 is "01"#   day   - Day with letter extension.  1 is "1st"#   yy    - Two digit year.  2006 is "06"#   yyyy  - Four digit year.  2006 is "2006"#   year  - Four digit year.  2006 is "2006"# --------------------------------------------------------------------------# # Cut and paste the lines below to change the order in which your files# appear on the menu.  Don't worry about adding or removing files, Natural# Docs will take care of that.# # You can further organize the menu by grouping the entries.  Add a# "Group: [name] {" line to start a group, and add a "}" to end it.# # You can add text and web links to the menu by adding "Text: [text]" and# "Link: [name] ([URL])" lines, respectively.# # The formatting and comments are auto-generated, so don't worry about# neatness when editing the file.  Natural Docs will clean it up the next# time it is run.  When working with groups, just deal with the braces and# forget about the indentation and comments.# # --------------------------------------------------------------------------# ERROR:  is not a valid keyword.
-<<<<<<< HEADFile: bbopx.barista.response.js  (barista/response.js)File: minerva/manager.js  (minerva/manager.js)File: noctua/edit.js  (noctua/edit.js)File: requests.js  (minerva/requests.js)File: user_check  (noctua/widgets.js)# ERROR:  is not a valid keyword.
-=======Group: Minerva  {   File: manager.js  (minerva/manager.js)   File: requests.js  (minerva/requests.js)   }  # Group: MinervaGroup: Barista  {   File: response.js  (barista/response.js)   File: client.js  (barista/client.js)   }  # Group: BaristaGroup: Noctua  {   File: context.js  (noctua/context.js)   File: draggable-canvas.js  (noctua/draggable-canvas.js)   File: edit.js  (noctua/edit.js)   File: location-store.js  (noctua/location-store.js)   File: widgets.js  (noctua/widgets.js)   }  # Group: Noctua# ERROR:  is not a valid keyword.
->>>>>>> 73e111bc4e39d48749bfd6bc47dbeb2497f5b038File: version.js  (version.js)Group: Index  {   Index: Everything   Class Index: Classes   File Index: Files   Function Index: Functions   Variable Index: Variables   }  # Group: Index
+
+# You can add a title and sub-title to your menu like this:
+# Title: [project name]
+# SubTitle: [subtitle]
+
+# You can add a footer to your documentation like this:
+# Footer: [text]
+# If you want to add a copyright notice, this would be the place to do it.
+
+# You can add a timestamp to your documentation like one of these:
+# Timestamp: Generated on month day, year
+# Timestamp: Updated mm/dd/yyyy
+# Timestamp: Last updated mon day
+#
+#   m     - One or two digit month.  January is "1"
+#   mm    - Always two digit month.  January is "01"
+#   mon   - Short month word.  January is "Jan"
+#   month - Long month word.  January is "January"
+#   d     - One or two digit day.  1 is "1"
+#   dd    - Always two digit day.  1 is "01"
+#   day   - Day with letter extension.  1 is "1st"
+#   yy    - Two digit year.  2006 is "06"
+#   yyyy  - Four digit year.  2006 is "2006"
+#   year  - Four digit year.  2006 is "2006"
+
+
+# --------------------------------------------------------------------------
+# 
+# Cut and paste the lines below to change the order in which your files
+# appear on the menu.  Don't worry about adding or removing files, Natural
+# Docs will take care of that.
+# 
+# You can further organize the menu by grouping the entries.  Add a
+# "Group: [name] {" line to start a group, and add a "}" to end it.
+# 
+# You can add text and web links to the menu by adding "Text: [text]" and
+# "Link: [name] ([URL])" lines, respectively.
+# 
+# The formatting and comments are auto-generated, so don't worry about
+# neatness when editing the file.  Natural Docs will clean it up the next
+# time it is run.  When working with groups, just deal with the braces and
+# forget about the indentation and comments.
+# 
+# --------------------------------------------------------------------------
+
+
+Group: Minerva  {
+
+   File: manager.js  (minerva/manager.js)
+   File: requests.js  (minerva/requests.js)
+   }  # Group: Minerva
+
+Group: Barista  {
+
+   File: response.js  (barista/response.js)
+   File: client.js  (barista/client.js)
+   }  # Group: Barista
+
+Group: Noctua  {
+
+   File: context.js  (noctua/context.js)
+   File: draggable-canvas.js  (noctua/draggable-canvas.js)
+   File: edit.js  (noctua/edit.js)
+   File: location-store.js  (noctua/location-store.js)
+   File: widgets.js  (noctua/widgets.js)
+   }  # Group: Noctua
+
+File: version.js  (version.js)
+
+Group: Index  {
+
+   Index: Everything
+   Class Index: Classes
+   File Index: Files
+   Function Index: Functions
+   Variable Index: Variables
+   }  # Group: Index
+
