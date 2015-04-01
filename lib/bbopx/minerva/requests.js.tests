@@ -89,12 +89,27 @@ var diff = mr_t.is_different_atom;
     e2_req.model(model_id);
     e2_req.fact(ind1_req.individual(), ind2_req.individual(), 'occurs_in');
 
-    same(ind1_req.objectify()['assignToVariable'], 
+    same(ind1_req.objectify()['arguments']['assignToVariable'], 
 	 ind1_req.individual(),
 	 'var for ind');
-    same(e2_req.objectify()['assignToVariable'],
+    same(e2_req.objectify()['arguments']['assignToVariable'],
 	 null,
 	 'no var for edge');
+    
+    // // Toy run.
+    // var mid = 'gomodel:5515e3c80000001';
+    // var manager = new bbopx.minerva.manager('http://localhost:3400',
+    // 					'minerva_local',
+    // 					'123',
+    // 					'node');
+    // // 
+    // var each = bbop.core.each;
+    // each(['meta', 'merge', 'rebuild', 'error'], function(callback_type){
+    //     manager.register(callback_type, 'foo', function(resp, man){
+    // 	console.log(resp);
+    //     });
+    // // Call
+    // manager.DO_NOT_USE_THIS(mid);
 })();
 
 ///
