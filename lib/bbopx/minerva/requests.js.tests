@@ -8,7 +8,7 @@
 //// : make bundle && NODE_PATH=external:staging node lib/bbopx/minerva/requests.js.tests
 ////
 //// Usage (node, interactive debugging):
-//// : make bundle && TEST=lib/bbopx/minerva/requests.js.tests NODE_PATH=external:staging:lib/bpx/minerva node -e "eval(require('fs').readFileSync(process.env.TEST)+''); require('repl').start('> ')"
+//// : make bundle && TEST=lib/bbopx/minerva/requests.js.tests NODE_PATH=external:staging:lib/bbopx/minerva node -e "eval(require('fs').readFileSync(process.env.TEST)+''); require('repl').start('> ')"
 ////
 
 // Load bbop.
@@ -17,12 +17,21 @@ var bbop = require('bbop').bbop;
 var bbopx = require('bbopx');
 var mr_t = new bbop.test();
 
+//
+function ll(x){
+    console.log(JSON.stringify(x, null, ' '));
+}
+
 ///
 /// Start unit testing.
 ///
 
+// Atoms.
 var same = mr_t.is_same_atom;
 var diff = mr_t.is_different_atom;
+// Others.
+var same_set = mr_t.is_same_set;
+var same_hash = mr_t.is_same_hash;
 
 ///
 /// Simple testing for request_variable.
@@ -116,7 +125,8 @@ var diff = mr_t.is_different_atom;
 /// Request sets
 ///
 
-// 
+// Add handmade request and try decoding the payload (which would also
+// test structure()).
 (function(){
     
     var reqs = new bbopx.minerva.request_set('foo', 'information');
@@ -135,6 +145,164 @@ var diff = mr_t.is_different_atom;
     same(jsblob[0].entity, 'model', 'model entity');
     same(jsblob[0].operation, 'get', 'get model');
     same(jsblob[0].arguments.modelId, '123', 'model 123');
+    
+})();
+
+// Two ways to add model id to a request.
+(function(){
+    
+    var reqs1 = new bbopx.minerva.request_set('utoken', 'action', 'mid:123');
+    reqs1.add_simple_individual('GO:123');
+    var st1 = reqs1.structure();
+
+    var reqs2 = new bbopx.minerva.request_set('utoken', 'action');
+    reqs2.add_simple_individual('GO:123', 'mid:123');
+    var st2 = reqs1.structure();
+    
+    same('mid:123',
+	 st2['requests'][0]['arguments']['modelId'],
+	 'correct model ID');
+    same(st1['requests'][0]['arguments']['modelId'],
+	 st2['requests'][0]['arguments']['modelId'],
+	 'two ways to add model');
+})();
+
+// Checking last_individual_id, last_fact_triple, and counting on the
+// stack.
+(function(){
+    
+    var reqs = new bbopx.minerva.request_set('utoken', 'action', 'mid:123');
+    
+    // Nothing there yet.
+    same(reqs.last_individual_id(), null,
+	 'no last individial yet');
+    same(reqs.last_fact_triple(), null,
+	 'no last edge yet');
+    
+    // Add an individiual to the request stack.
+    reqs.add_simple_individual('GO:123');
+    same(reqs.last_individual_id(), // cheat to examine
+	 reqs.structure()['requests'][0]['arguments']['assignToVariable'],
+	 'seeing the last and only individual');
+    
+    // Add an individiual to the request stack.
+    reqs.add_simple_individual('GO:456');
+    same(reqs.last_individual_id(), // cheat to examine
+	 reqs.structure()['requests'][1]['arguments']['assignToVariable'],
+	 'see the last individual on the stack');
+    
+    // Check the countback versions of function.
+    same(reqs.last_individual_id(0), // cheat to examine
+	 reqs.structure()['requests'][1]['arguments']['assignToVariable'],
+	 'same as no argument');
+    same(reqs.last_individual_id(1), // cheat to examine
+	 reqs.structure()['requests'][0]['arguments']['assignToVariable'],
+	 'count back one');
+ 
+    // Still no edge.
+    same(reqs.last_fact_triple(), null,
+	 'still no last edge');
+
+    // Add an edge.
+    reqs.add_fact(reqs.last_individual_id(1),
+		  reqs.last_individual_id(0),
+		  "ECO:123");
+    
+    // We have our first edge?
+    same_set(reqs.last_fact_triple(),
+	     [reqs.last_individual_id(1),
+	      reqs.last_individual_id(0),
+	      "ECO:123"],
+	     'first edge as expected');
+    same_set(reqs.last_fact_triple(0),
+	     [reqs.last_individual_id(1),
+	      reqs.last_individual_id(0),
+	      "ECO:123"],
+	     'first edge, other reference');
+    same(reqs.last_fact_triple(1), null,
+	 'out-of-bounds works with first edge');
+
+    // Add yet another individiual to the request stack (request #4)
+    reqs.add_simple_individual('GO:789');
+    same(reqs.last_individual_id(), // cheat to examine
+	 reqs.structure()['requests'][3]['arguments']['assignToVariable'],
+	 'see the last individual on the stack');
+    
+    // Check that our countback frame has shifted.
+    same(reqs.last_individual_id(0), // cheat to examine
+	 reqs.structure()['requests'][3]['arguments']['assignToVariable'],
+	 'after adding edge, same as no argument');
+    same(reqs.last_individual_id(1), // cheat to examine
+	 reqs.structure()['requests'][1]['arguments']['assignToVariable'],
+	 'after adding edge, count back one');
+    same(reqs.last_individual_id(2), // cheat to examine
+	 reqs.structure()['requests'][0]['arguments']['assignToVariable'],
+	 'after adding edge, count back two');
+    
+    // Check that out of bounds is okay.
+    same(reqs.last_individual_id(3),
+	 null,
+	 'there is nothing that far back');
+
+    // Add another edge to the stack.
+    reqs.add_fact(reqs.last_individual_id(1),
+		  reqs.last_individual_id(0),
+		  "ECO:456");
+
+    // We have our second edge?
+    same_set(reqs.last_fact_triple(),
+	     [reqs.last_individual_id(1),
+	      reqs.last_individual_id(0),
+	      "ECO:456"],
+	     'second edge as expected');
+    same_set(reqs.last_fact_triple(0),
+	     [reqs.last_individual_id(1),
+	      reqs.last_individual_id(0),
+	      "ECO:456"],
+	     'second edge, other reference');
+    // Another look at the first edge.
+    same_set(reqs.last_fact_triple(1),
+	     [reqs.last_individual_id(2),
+	      reqs.last_individual_id(1),
+	      "ECO:123"],
+	     'first edge still there');
+    same(reqs.last_fact_triple(2), null,
+	 'out-of-bounds works with two edges');
+
+})();
+
+// 
+(function(){
+
+    var reqs = new bbopx.minerva.request_set('utoken', 'action', 'mid:123');
+
+    // axon guidance receptor activity
+    reqs.add_simple_individual('GO:0008046');
+    var mf = reqs.last_individual_id();
+    
+    // neurogenesis
+    reqs.add_simple_individual('GO:0022008');
+    var bp = reqs.last_individual_id();
+    
+    // cell part
+    reqs.add_simple_individual('GO:0004464');
+    var loc = reqs.last_individual_id();
+    
+    // Drd3
+    reqs.add_simple_individual('MGI:MGI:94925');
+    var gp = reqs.last_individual_id();
+    
+    reqs.add_fact(mf, bp, 'part_of');
+    
+    // reqs.add_evidence_to_fact('ECO:0000001', ['PMID:0000000'],
+    // 			  mf, bp, 'part_of');
+    reqs.add_evidence_to_last_fact('ECO:0000001', ['PMID:0000000']);
+    
+    // act occurs_in loc.
+    reqs.add_fact(mf, loc, 'RO:0002333');
+    
+    // act enabled_by gp.
+    reqs.add_fact(mf, gp, 'occurs_in');
     
 })();
 
