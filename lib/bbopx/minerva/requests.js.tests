@@ -19,7 +19,11 @@ var mr_t = new bbop.test();
 
 //
 function ll(x){
-    console.log(JSON.stringify(x, null, ' '));
+    if( x && x.structure ){
+	console.log(JSON.stringify(x.structure(), null, ' '));
+    }else{
+	console.log(JSON.stringify(x, null, ' '));
+    }
 }
 
 ///
@@ -27,11 +31,13 @@ function ll(x){
 ///
 
 // Atoms.
-var same = mr_t.is_same_atom;
-var diff = mr_t.is_different_atom;
+//var same = mr_t.is_same_atom;
+//var diff = mr_t.is_different_atom;
+var same = mr_t.is_same_thing;
+var diff = mr_t.is_different_thing;
 // Others.
-var same_set = mr_t.is_same_set;
-var same_hash = mr_t.is_same_hash;
+//var same_set = mr_t.is_same_set;
+//var same_hash = mr_t.is_same_hash;
 
 ///
 /// Simple testing for request_variable.
@@ -209,16 +215,16 @@ var same_hash = mr_t.is_same_hash;
 		  "ECO:123");
     
     // We have our first edge?
-    same_set(reqs.last_fact_triple(),
-	     [reqs.last_individual_id(1),
-	      reqs.last_individual_id(0),
-	      "ECO:123"],
-	     'first edge as expected');
-    same_set(reqs.last_fact_triple(0),
-	     [reqs.last_individual_id(1),
-	      reqs.last_individual_id(0),
-	      "ECO:123"],
-	     'first edge, other reference');
+    same(reqs.last_fact_triple(),
+	 [reqs.last_individual_id(1),
+	  reqs.last_individual_id(0),
+	  "ECO:123"],
+	 'first edge as expected');
+    same(reqs.last_fact_triple(0),
+	 [reqs.last_individual_id(1),
+	  reqs.last_individual_id(0),
+	  "ECO:123"],
+	 'first edge, other reference');
     same(reqs.last_fact_triple(1), null,
 	 'out-of-bounds works with first edge');
 
@@ -250,28 +256,157 @@ var same_hash = mr_t.is_same_hash;
 		  "ECO:456");
 
     // We have our second edge?
-    same_set(reqs.last_fact_triple(),
-	     [reqs.last_individual_id(1),
-	      reqs.last_individual_id(0),
-	      "ECO:456"],
-	     'second edge as expected');
-    same_set(reqs.last_fact_triple(0),
-	     [reqs.last_individual_id(1),
-	      reqs.last_individual_id(0),
-	      "ECO:456"],
-	     'second edge, other reference');
+    same(reqs.last_fact_triple(),
+	 [reqs.last_individual_id(1),
+	  reqs.last_individual_id(0),
+	  "ECO:456"],
+	 'second edge as expected');
+    same(reqs.last_fact_triple(0),
+	 [reqs.last_individual_id(1),
+	  reqs.last_individual_id(0),
+	  "ECO:456"],
+	 'second edge, other reference');
     // Another look at the first edge.
-    same_set(reqs.last_fact_triple(1),
-	     [reqs.last_individual_id(2),
-	      reqs.last_individual_id(1),
-	      "ECO:123"],
-	     'first edge still there');
+    same(reqs.last_fact_triple(1),
+	 [reqs.last_individual_id(2),
+	  reqs.last_individual_id(1),
+	  "ECO:123"],
+	 'first edge still there');
     same(reqs.last_fact_triple(2), null,
 	 'out-of-bounds works with two edges');
 
 })();
 
-// 
+// Check annotations, which use a wrapping function to get all of the variations into a single bit of code (i.e. _op_annotation_to_target)
+//(function(){
+  
+var mod = 'mid:123';
+var key = 'k';
+var value = 'v';
+var sub = 'GO:123';
+var ob = 'GO:123';
+var pred = 'ECO:001';
+
+///
+/// Add all of the variations.
+///
+
+var reqs = new bbopx.minerva.request_set('utoken', 'action', mod);
+
+reqs.add_annotation_to_model(key, value);
+reqs.remove_annotation_from_model(key, value);
+
+reqs.add_annotation_to_individual(key, value, sub);
+reqs.remove_annotation_from_individual(key, value, sub);
+
+reqs.add_annotation_to_fact(key, value, sub, ob, pred);
+reqs.remove_annotation_from_fact(key, value, sub, ob, pred);
+
+var all_requests = reqs.structure()['requests'];
+same(all_requests[0],
+     {
+	 "entity": "model",
+	 "operation": "add-annotation",
+	 "arguments": {
+	     "values": [
+		 {
+		     "key": "k",
+		     "value": "v"
+		 }
+	     ],
+	     "modelId": "mid:123"
+	 }
+     },
+     'model add-annotation okay');
+same(all_requests[1],
+     {
+	 "entity": "model",
+	 "operation": "remove-annotation",
+	 "arguments": {
+	     "values": [
+		 {
+		     "key": "k",
+		     "value": "v"
+		 }
+	     ],
+	     "modelId": "mid:123"
+	 }
+     },
+     'model remove-annotation okay');
+same(all_requests[2],
+     {
+	 "entity": "individual",
+	 "operation": "add-annotation",
+	 "arguments": {
+	     "individual": "GO:123",
+	     "values": [
+		 {
+		     "key": "k",
+		     "value": "v"
+		 }
+	     ],
+	     "modelId": "mid:123"
+	 }
+     },
+     'ind add-annotation okay');
+same(all_requests[3],
+     {
+	 "entity": "individual",
+	 "operation": "remove-annotation",
+	 "arguments": {
+	     "individual": "GO:123",
+	     "values": [
+		 {
+		     "key": "k",
+		     "value": "v"
+		 }
+	     ],
+	     "modelId": "mid:123"
+	 }
+     },
+     'ind remove-annotation okay');
+same(all_requests[4],
+     {
+	 "entity": "fact",
+	 "operation": "add-annotation",
+	 "arguments": {
+	     "subject": "GO:123",
+	     "object": "GO:123",
+	     "predicate": "ECO:001",
+	     "values": [
+		 {
+		     "key": "k",
+		     "value": "v"
+		 }
+	     ],
+	     "modelId": "mid:123"
+	 }
+     },
+     'fact add-annotation okay');
+same(all_requests[5],
+     {
+	 "entity": "fact",
+	 "operation": "remove-annotation",
+	 "arguments": {
+	     "subject": "GO:123",
+	     "object": "GO:123",
+	     "predicate": "ECO:001",
+	     "values": [
+		 {
+		     "key": "k",
+		     "value": "v"
+		 }
+	     ],
+	     "modelId": "mid:123"
+	 }
+     },
+     'fact remove-annotation okay');
+     
+
+
+//});
+
+// TODO: Probe different ways of doing a "real" example.
 (function(){
 
     var reqs = new bbopx.minerva.request_set('utoken', 'action', 'mid:123');
