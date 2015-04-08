@@ -138,7 +138,7 @@ var diff = mr_t.is_different_thing;
     var reqs = new bbopx.minerva.request_set('foo');
     var req = new bbopx.minerva.request('model', 'get');
     req.model('123');
-    reqs.add(req);
+    reqs.add(req, 'query'); // if not explicit, becomes 'action'
     var args = reqs.callable();
     
     same(args.token, 'foo', 'foo uid');
