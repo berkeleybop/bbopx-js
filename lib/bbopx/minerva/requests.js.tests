@@ -135,14 +135,14 @@ var diff = mr_t.is_different_thing;
 // test structure()).
 (function(){
     
-    var reqs = new bbopx.minerva.request_set('foo', 'information');
+    var reqs = new bbopx.minerva.request_set('foo');
     var req = new bbopx.minerva.request('model', 'get');
     req.model('123');
     reqs.add(req);
     var args = reqs.callable();
     
     same(args.token, 'foo', 'foo uid');
-    same(args.intention, 'information', 'information intent');
+    same(args.intention, 'query', 'information intent');
     
     var blob = args.requests;
     var deblob = decodeURIComponent(blob);
@@ -157,11 +157,11 @@ var diff = mr_t.is_different_thing;
 // Two ways to add model id to a request.
 (function(){
     
-    var reqs1 = new bbopx.minerva.request_set('utoken', 'action', 'mid:123');
+    var reqs1 = new bbopx.minerva.request_set('utoken', 'mid:123');
     reqs1.add_simple_individual('GO:123');
     var st1 = reqs1.structure();
 
-    var reqs2 = new bbopx.minerva.request_set('utoken', 'action');
+    var reqs2 = new bbopx.minerva.request_set('utoken');
     reqs2.add_simple_individual('GO:123', 'mid:123');
     var st2 = reqs1.structure();
     
@@ -177,7 +177,7 @@ var diff = mr_t.is_different_thing;
 // stack.
 (function(){
     
-    var reqs = new bbopx.minerva.request_set('utoken', 'action', 'mid:123');
+    var reqs = new bbopx.minerva.request_set('utoken', 'mid:123');
     
     // Nothing there yet.
     same(reqs.last_individual_id(), null,
@@ -291,7 +291,7 @@ var pred = 'ECO:001';
 /// Add all of the variations.
 ///
 
-var reqs = new bbopx.minerva.request_set('utoken', 'action', mod);
+var reqs = new bbopx.minerva.request_set('utoken', mod);
 
 reqs.add_annotation_to_model(key, value);
 reqs.remove_annotation_from_model(key, value);
@@ -409,7 +409,7 @@ same(all_requests[5],
 // TODO: Probe different ways of doing a "real" example.
 (function(){
 
-    var reqs = new bbopx.minerva.request_set('utoken', 'action', 'mid:123');
+    var reqs = new bbopx.minerva.request_set('utoken', 'mid:123');
 
     // axon guidance receptor activity
     reqs.add_simple_individual('GO:0008046');
