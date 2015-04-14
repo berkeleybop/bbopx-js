@@ -1,11 +1,12 @@
 // CommonJS Modules 1.0 wrapper.
 lib/bbopx/commonjs-modules_1_0-bbop.js
+// Minerva
+lib/bbopx/minerva/class_expression.js
+lib/bbopx/minerva/manager.js
+lib/bbopx/minerva/requests.js
 // Barista
 lib/bbopx/barista/response.js
 lib/bbopx/barista/client.js
-// Minerva
-lib/bbopx/minerva/manager.js
-lib/bbopx/minerva/requests.js
 // Noctua
 lib/bbopx/noctua/context.js
 lib/bbopx/noctua/draggable-canvas.js
