@@ -34,6 +34,35 @@ function ll(x){
 /// Start unit testing.
 ///
 
+// Test nothing.
+(function(){
+
+    var ce = new bbopx.minerva.class_expression();
+
+    same(ce.id().length == 36, true,
+	 'id is like 8ccbf846-d7e8-4d86-9e5c-0b48827d178d');
+    same(ce.nested_p(), false, 'not nested');
+    same(ce.inferred_p(), false, 'not inferred');
+    
+    same(ce.category(), 'unknown', 'graphically a mystery');
+    same(ce.type(), null, 'instance of nope');
+
+    same(ce.class_id(), null, 'has no simple ID');
+    same(ce.class_label(), null, 'has no label');
+
+    same(ce.svf_class_expression(), null, 'nope SVF');
+    same(ce.property_id(), null, 'nope pid');
+    same(ce.property_label(), null, 'nope plbl');
+
+    try {
+	ce.structure();
+	same(true, false, 'should never get here');
+    }catch(e){	
+	same(null, null, 'attempts at structure explode');
+    }
+
+})();
+
 // Simple testing of simple properties.
 (function(){
 
@@ -84,6 +113,46 @@ function ll(x){
 	 '[2] correct trivial structure');
 
 })();
+
+// Try SVF after the fact.
+// (function(){
+
+    var ce = new bbopx.minerva.class_expression(null, true);
+
+ce.as_simple_svf('GO:123', 'RO:456');
+
+    same(ce.id().length == 36, true,
+	 '[ssvf] id is like 8ccbf846-d7e8-4d86-9e5c-0b48827d178d');
+    same(ce.nested_p(), true, '[ssvf] svf always a little nested');
+    same(ce.inferred_p(), true, '[ssvf] /is/ inferred'); // change of pace
+    
+    same(ce.category(), 'RO:456', '[ssvf] graphically, is a simple class');
+    same(ce.type(), 'svf', '[ssvf] instance is type of svf');
+
+    same(ce.class_id(), null, '[ssvf] has null ID--nested');
+    same(ce.class_label(), null, '[ssvf] has null label--nested');
+
+    same(ce.svf_class_expression().structure(), { type: 'Class', id: 'GO:123' },
+	 '[svf] nested simple');
+    same(ce.property_id(), 'RO:456', '[ssvf] has property id');
+    same(ce.property_label(), 'RO:456', '[ssvf] had property lbl');
+
+    same(ce.structure(), {
+	'someValuesFrom':
+	{
+	    'type': 'Class',
+	    'id': 'GO:123'
+	},
+	'onProperty':
+	{
+	    'type': 'ObjectProperty',
+	    'id': 'RO:456'
+	},
+	'type': 'Restriction'
+    },
+	 '[ssvf] correct trivial structure');
+
+// })();
 
 // // 
 // (function(){
