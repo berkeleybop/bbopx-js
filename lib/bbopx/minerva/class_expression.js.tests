@@ -69,22 +69,22 @@ function ll(x){
     var ce = new bbopx.minerva.class_expression('GO:123');
 
     same(ce.id().length == 36, true,
-	 'id is like 8ccbf846-d7e8-4d86-9e5c-0b48827d178d');
-    same(ce.nested_p(), false, 'not nested');
-    same(ce.inferred_p(), false, 'not inferred');
+	 '[1] id is like 8ccbf846-d7e8-4d86-9e5c-0b48827d178d');
+    same(ce.nested_p(), false, '[1] not nested');
+    same(ce.inferred_p(), false, '[1] not inferred');
     
-    same(ce.category(), 'instance_of', 'graphically, is a simple class');
-    same(ce.type(), 'class', 'instance is type of class');
+    same(ce.category(), 'instance_of', '[1] graphically, is a simple class');
+    same(ce.type(), 'class', '[1] instance is type of class');
 
-    same(ce.class_id(), 'GO:123', 'has a simple ID');
-    same(ce.class_label(), 'GO:123', 'has a label');
+    same(ce.class_id(), 'GO:123', '[1] has a simple ID');
+    same(ce.class_label(), 'GO:123', '[1] has a label');
 
-    same(ce.svf_class_expression(), null, 'not SVF');
-    same(ce.property_id(), null, 'no pid');
-    same(ce.property_label(), null, 'no plbl');
+    same(ce.svf_class_expression(), null, '[1] not SVF');
+    same(ce.property_id(), null, '[1] no pid');
+    same(ce.property_label(), null, '[1] no plbl');
 
     same(ce.structure(), {'type': 'Class', 'id': 'GO:123' },
-	 'correct trivial structure');
+	 '[1] correct trivial structure');
 
 })();
 
@@ -114,11 +114,36 @@ function ll(x){
 
 })();
 
+// Same as before, but different args.
+(function(){
+
+    var ce = new bbopx.minerva.class_expression(
+	new bbopx.minerva.class_expression('GO:123'));
+
+    same(ce.id().length == 36, true,
+	 '[3] id is like 8ccbf846-d7e8-4d86-9e5c-0b48827d178d');
+    same(ce.nested_p(), false, '[3] not nested');
+    same(ce.inferred_p(), false, '[3] not inferred');
+    
+    same(ce.category(), 'instance_of', '[3] graphically, is a simple class');
+    same(ce.type(), 'class', '[3] instance is type of class');
+
+    same(ce.class_id(), 'GO:123', '[3] has a simple ID');
+    same(ce.class_label(), 'GO:123', '[3] has a label');
+
+    same(ce.svf_class_expression(), null, '[3] not SVF');
+    same(ce.property_id(), null, '[3] no pid');
+    same(ce.property_label(), null, '[3] no plbl');
+
+    same(ce.structure(), {'type': 'Class', 'id': 'GO:123' },
+	 '[3] correct trivial structure');
+
+})();
+
 // Try SVF after the fact.
 (function(){
     
-    var ce = new bbopx.minerva.class_expression(null, true);
-    
+    var ce = new bbopx.minerva.class_expression(null, true);    
     ce.as_svf('GO:123', 'RO:456');
     
     same(ce.id().length == 36, true,
@@ -133,7 +158,7 @@ function ll(x){
     same(ce.class_label(), null, '[ssvf] has null label--nested');
     
     same(ce.svf_class_expression().structure(), { type: 'Class', id: 'GO:123' },
-	 '[svf] nested simple');
+	 '[ssvf] nested simple');
     same(ce.property_id(), 'RO:456', '[ssvf] has property id');
     same(ce.property_label(), 'RO:456', '[ssvf] had property lbl');
     
@@ -149,6 +174,44 @@ function ll(x){
 	   'type': 'Restriction'
 	 },
 	 '[ssvf] correct trivial structure');
+    
+})();
+
+// Try an after-the-fact intersection.
+(function(){
+
+    var ce = new bbopx.minerva.class_expression();
+    ce.as_set('intersection',
+    	      ['GO:123', new bbopx.minerva.class_expression('GO:456')]);
+    
+    same(ce.id().length == 36, true,
+    	 '[sint] id is like 8ccbf846-d7e8-4d86-9e5c-0b48827d178d');
+    same(ce.nested_p(), true, '[sint] sets always a little nested');
+    same(ce.inferred_p(), false, '[sint] is not inferred');
+    
+    same(ce.category(), 'intersection', '[sint] graphically, is nested');
+    same(ce.type(), 'intersection', '[sint] instance is type of intersection');
+    
+    same(ce.class_id(), null, '[sint] has null ID--nested');
+    same(ce.class_label(), null, '[sint] has null label--nested');
+    
+    same(ce.svf_class_expression(), null, '[sint] not svf here');
+    same(ce.property_id(), null, '[sint] has no property id');
+    same(ce.property_label(), null, '[sint] has no property lbl');
+    
+    same(ce.structure(),
+    	 { 'intersectionOf': [
+    	     {
+    		 'type': 'Class',
+    		 'id': 'GO:123'
+    	     },
+    	     {
+    		 'type': 'Class',
+    		 'id': 'GO:456'
+    	     }
+    	 ]
+    	 },
+    	 '[sint] correct trivial structure');
     
 })();
 
