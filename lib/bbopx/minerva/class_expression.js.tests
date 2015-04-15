@@ -35,7 +35,7 @@ function ll(x){
 ///
 
 // Simple testing of simple proprties.
-//(function(){
+(function(){
 
     var ce = new bbopx.minerva.class_expression('GO:123');
 
@@ -53,7 +53,11 @@ function ll(x){
     same(ce.svf_class_expression(), null, 'not SVF');
     same(ce.property_id(), null, 'no pid');
     same(ce.property_label(), null, 'no plbl');
-//})();
+
+    same(ce.structure(), {'type': 'Class', 'id': 'GO:123' },
+	 'correct trivial structure');
+
+})();
 
 // (function(){
 //     var rv = new bbopx.minerva.request_variable('foo');
