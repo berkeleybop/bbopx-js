@@ -158,11 +158,11 @@ var diff = mr_t.is_different_thing;
 (function(){
     
     var reqs1 = new bbopx.minerva.request_set('utoken', 'mid:123');
-    reqs1.add_simple_individual('GO:123');
+    reqs1.add_individual('GO:123');
     var st1 = reqs1.structure();
 
     var reqs2 = new bbopx.minerva.request_set('utoken');
-    reqs2.add_simple_individual('GO:123', 'mid:123');
+    reqs2.add_individual('GO:123', 'mid:123');
     var st2 = reqs1.structure();
     
     same('mid:123',
@@ -186,13 +186,13 @@ var diff = mr_t.is_different_thing;
 	 'no last edge yet');
     
     // Add an individiual to the request stack.
-    reqs.add_simple_individual('GO:123');
+    reqs.add_individual('GO:123');
     same(reqs.last_individual_id(), // cheat to examine
 	 reqs.structure()['requests'][0]['arguments']['assignToVariable'],
 	 'seeing the last and only individual');
     
     // Add an individiual to the request stack.
-    reqs.add_simple_individual('GO:456');
+    reqs.add_individual('GO:456');
     same(reqs.last_individual_id(), // cheat to examine
 	 reqs.structure()['requests'][1]['arguments']['assignToVariable'],
 	 'see the last individual on the stack');
@@ -210,9 +210,9 @@ var diff = mr_t.is_different_thing;
 	 'still no last edge');
 
     // Add an edge.
-    reqs.add_fact(reqs.last_individual_id(1),
-		  reqs.last_individual_id(0),
-		  "ECO:123");
+    reqs.add_fact([reqs.last_individual_id(1),
+		   reqs.last_individual_id(0),
+		   "ECO:123"]);
     
     // We have our first edge?
     same(reqs.last_fact_triple(),
@@ -229,7 +229,7 @@ var diff = mr_t.is_different_thing;
 	 'out-of-bounds works with first edge');
 
     // Add yet another individiual to the request stack (request #4)
-    reqs.add_simple_individual('GO:789');
+    reqs.add_individual('GO:789');
     same(reqs.last_individual_id(), // cheat to examine
 	 reqs.structure()['requests'][3]['arguments']['assignToVariable'],
 	 'see the last individual on the stack');
@@ -251,9 +251,9 @@ var diff = mr_t.is_different_thing;
 	 'there is nothing that far back');
 
     // Add another edge to the stack.
-    reqs.add_fact(reqs.last_individual_id(1),
-		  reqs.last_individual_id(0),
-		  "ECO:456");
+    reqs.add_fact([reqs.last_individual_id(1),
+		   reqs.last_individual_id(0),
+		   "ECO:456"]);
 
     // We have our second edge?
     same(reqs.last_fact_triple(),
@@ -277,134 +277,157 @@ var diff = mr_t.is_different_thing;
 
 })();
 
-// Check annotations, which use a wrapping function to get all of the variations into a single bit of code (i.e. _op_annotation_to_target)
-//(function(){
+// Check annotations, which use a wrapping function to get all of the
+// variations into a single bit of code
+// (i.e. _op_annotation_to_target)
+(function(){
   
-var mod = 'mid:123';
-var key = 'k';
-var value = 'v';
-var sub = 'GO:123';
-var ob = 'GO:123';
-var pred = 'ECO:001';
+    var mod = 'mid:123';
+    var key = 'k';
+    var value = 'v';
+    var sub = 'GO:123';
+    var ob = 'GO:456';
+    var pred = 'ECO:001';
+    
+    ///
+    /// Add all of the variations.
+    ///
+    
+    var reqs = new bbopx.minerva.request_set('utoken', mod);
+    
+    reqs.add_annotation_to_model(key, value);
+    reqs.remove_annotation_from_model(key, value);
+    
+    reqs.add_annotation_to_individual(key, value, sub);
+    reqs.remove_annotation_from_individual(key, value, sub);
+    
+    reqs.add_annotation_to_fact(key, value, [sub, ob, pred]);
+    reqs.remove_annotation_from_fact(key, value, [sub, ob, pred]);
+    
+    var all_requests = reqs.structure()['requests'];
+    same(all_requests[0],
+	 {
+	     "entity": "model",
+	     "operation": "add-annotation",
+	     "arguments": {
+		 "values": [
+		     {
+			 "key": "k",
+			 "value": "v"
+		     }
+		 ],
+		 "modelId": "mid:123"
+	     }
+	 },
+	 'model add-annotation okay');
+    same(all_requests[1],
+	 {
+	     "entity": "model",
+	     "operation": "remove-annotation",
+	     "arguments": {
+		 "values": [
+		     {
+			 "key": "k",
+			 "value": "v"
+		     }
+		 ],
+		 "modelId": "mid:123"
+	     }
+	 },
+	 'model remove-annotation okay');
+    same(all_requests[2],
+	 {
+	     "entity": "individual",
+	     "operation": "add-annotation",
+	     "arguments": {
+		 "individual": "GO:123",
+		 "values": [
+		     {
+			 "key": "k",
+			 "value": "v"
+		     }
+		 ],
+		 "modelId": "mid:123"
+	     }
+	 },
+	 'ind add-annotation okay');
+    same(all_requests[3],
+	 {
+	     "entity": "individual",
+	     "operation": "remove-annotation",
+	     "arguments": {
+		 "individual": "GO:123",
+		 "values": [
+		     {
+			 "key": "k",
+			 "value": "v"
+		     }
+		 ],
+		 "modelId": "mid:123"
+	     }
+	 },
+	 'ind remove-annotation okay');
+    same(all_requests[4],
+	 {
+	     "entity": "fact",
+	     "operation": "add-annotation",
+	     "arguments": {
+		 "subject": "GO:123",
+		 "object": "GO:456",
+		 "predicate": "ECO:001",
+		 "values": [
+		     {
+			 "key": "k",
+			 "value": "v"
+		     }
+		 ],
+		 "modelId": "mid:123"
+	     }
+	 },
+	 'fact add-annotation okay');
+    same(all_requests[5],
+	 {
+	     "entity": "fact",
+	     "operation": "remove-annotation",
+	     "arguments": {
+		 "subject": "GO:123",
+		 "object": "GO:456",
+		 "predicate": "ECO:001",
+		 "values": [
+		     {
+			 "key": "k",
+			 "value": "v"
+		     }
+		 ],
+		 "modelId": "mid:123"
+	     }
+	 },
+	 'fact remove-annotation okay');
 
-///
-/// Add all of the variations.
-///
+});
 
-var reqs = new bbopx.minerva.request_set('utoken', mod);
+// TODO: Practicing another assembly.
+(function(){
+  
+    var mod = 'mid:123';
 
-reqs.add_annotation_to_model(key, value);
-reqs.remove_annotation_from_model(key, value);
+    // REPL-ish
+    var union = bbopx.minerva.class_expression.union;
+    var intersection = bbopx.minerva.class_expression.intersection;
+    var svf = bbopx.minerva.class_expression.svf;
+    var cls = bbopx.minerva.class_expression.cls;
 
-reqs.add_annotation_to_individual(key, value, sub);
-reqs.remove_annotation_from_individual(key, value, sub);
+    ///
+    /// Add all of the variations.
+    ///
+    
+    var reqs = new bbopx.minerva.request_set('utoken', mod);
+    
+    var sb = reqs.add_individual(intersection(['GO:123', 'GO:456']));
+    var ob = reqs.add_individual('GO:789');
+    var ed = reqs.add_fact([sb, ob, 'RO:123']);
 
-reqs.add_annotation_to_fact(key, value, sub, ob, pred);
-reqs.remove_annotation_from_fact(key, value, sub, ob, pred);
-
-var all_requests = reqs.structure()['requests'];
-same(all_requests[0],
-     {
-	 "entity": "model",
-	 "operation": "add-annotation",
-	 "arguments": {
-	     "values": [
-		 {
-		     "key": "k",
-		     "value": "v"
-		 }
-	     ],
-	     "modelId": "mid:123"
-	 }
-     },
-     'model add-annotation okay');
-same(all_requests[1],
-     {
-	 "entity": "model",
-	 "operation": "remove-annotation",
-	 "arguments": {
-	     "values": [
-		 {
-		     "key": "k",
-		     "value": "v"
-		 }
-	     ],
-	     "modelId": "mid:123"
-	 }
-     },
-     'model remove-annotation okay');
-same(all_requests[2],
-     {
-	 "entity": "individual",
-	 "operation": "add-annotation",
-	 "arguments": {
-	     "individual": "GO:123",
-	     "values": [
-		 {
-		     "key": "k",
-		     "value": "v"
-		 }
-	     ],
-	     "modelId": "mid:123"
-	 }
-     },
-     'ind add-annotation okay');
-same(all_requests[3],
-     {
-	 "entity": "individual",
-	 "operation": "remove-annotation",
-	 "arguments": {
-	     "individual": "GO:123",
-	     "values": [
-		 {
-		     "key": "k",
-		     "value": "v"
-		 }
-	     ],
-	     "modelId": "mid:123"
-	 }
-     },
-     'ind remove-annotation okay');
-same(all_requests[4],
-     {
-	 "entity": "fact",
-	 "operation": "add-annotation",
-	 "arguments": {
-	     "subject": "GO:123",
-	     "object": "GO:123",
-	     "predicate": "ECO:001",
-	     "values": [
-		 {
-		     "key": "k",
-		     "value": "v"
-		 }
-	     ],
-	     "modelId": "mid:123"
-	 }
-     },
-     'fact add-annotation okay');
-same(all_requests[5],
-     {
-	 "entity": "fact",
-	 "operation": "remove-annotation",
-	 "arguments": {
-	     "subject": "GO:123",
-	     "object": "GO:123",
-	     "predicate": "ECO:001",
-	     "values": [
-		 {
-		     "key": "k",
-		     "value": "v"
-		 }
-	     ],
-	     "modelId": "mid:123"
-	 }
-     },
-     'fact remove-annotation okay');
-     
-
-
-//});
+});
 
 // TODO: Probe different ways of doing a "real" example.
 (function(){
@@ -412,32 +435,28 @@ same(all_requests[5],
     var reqs = new bbopx.minerva.request_set('utoken', 'mid:123');
 
     // axon guidance receptor activity
-    reqs.add_simple_individual('GO:0008046');
-    var mf = reqs.last_individual_id();
+    var mf = reqs.add_individual('GO:0008046');
     
     // neurogenesis
-    reqs.add_simple_individual('GO:0022008');
-    var bp = reqs.last_individual_id();
+    var bp = reqs.add_individual('GO:0022008');
     
     // cell part
-    reqs.add_simple_individual('GO:0004464');
-    var loc = reqs.last_individual_id();
+    var loc = reqs.add_individual('GO:0004464');
     
     // Drd3
-    reqs.add_simple_individual('MGI:MGI:94925');
-    var gp = reqs.last_individual_id();
+    var gp = reqs.add_individual('MGI:MGI:94925');
     
-    reqs.add_fact(mf, bp, 'part_of');
+    reqs.add_fact([mf, bp, 'part_of']);
     
     // reqs.add_evidence_to_fact('ECO:0000001', ['PMID:0000000'],
     // 			  mf, bp, 'part_of');
     reqs.add_evidence_to_last_fact('ECO:0000001', ['PMID:0000000']);
     
     // act occurs_in loc.
-    reqs.add_fact(mf, loc, 'RO:0002333');
+    reqs.add_fact([mf, loc, 'RO:0002333']);
     
     // act enabled_by gp.
-    reqs.add_fact(mf, gp, 'occurs_in');
+    reqs.add_fact([mf, gp, 'occurs_in']);
     
 })();
 
