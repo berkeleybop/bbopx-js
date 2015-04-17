@@ -104,10 +104,10 @@ var diff = mr_t.is_different_thing;
     e2_req.model(model_id);
     e2_req.fact(ind1_req.individual(), ind2_req.individual(), 'occurs_in');
 
-    same(ind1_req.objectify()['arguments']['assignToVariable'], 
+    same(ind1_req.objectify()['arguments']['assign-to-variable'], 
 	 ind1_req.individual(),
 	 'var for ind');
-    same(e2_req.objectify()['arguments']['assignToVariable'],
+    same(e2_req.objectify()['arguments']['assign-to-variable'],
 	 null,
 	 'no var for edge');
     
@@ -150,7 +150,7 @@ var diff = mr_t.is_different_thing;
     same(jsblob.length, 1, 'one request');
     same(jsblob[0].entity, 'model', 'model entity');
     same(jsblob[0].operation, 'get', 'get model');
-    same(jsblob[0].arguments.modelId, '123', 'model 123');
+    same(jsblob[0].arguments['model-id'], '123', 'model 123');
     
 })();
 
@@ -166,10 +166,10 @@ var diff = mr_t.is_different_thing;
     var st2 = reqs1.structure();
     
     same('mid:123',
-	 st2['requests'][0]['arguments']['modelId'],
+	 st2['requests'][0]['arguments']['model-id'],
 	 'correct model ID');
-    same(st1['requests'][0]['arguments']['modelId'],
-	 st2['requests'][0]['arguments']['modelId'],
+    same(st1['requests'][0]['arguments']['model-id'],
+	 st2['requests'][0]['arguments']['model-id'],
 	 'two ways to add model');
 })();
 
@@ -188,21 +188,21 @@ var diff = mr_t.is_different_thing;
     // Add an individiual to the request stack.
     reqs.add_individual('GO:123');
     same(reqs.last_individual_id(), // cheat to examine
-	 reqs.structure()['requests'][0]['arguments']['assignToVariable'],
+	 reqs.structure()['requests'][0]['arguments']['assign-to-variable'],
 	 'seeing the last and only individual');
     
     // Add an individiual to the request stack.
     reqs.add_individual('GO:456');
     same(reqs.last_individual_id(), // cheat to examine
-	 reqs.structure()['requests'][1]['arguments']['assignToVariable'],
+	 reqs.structure()['requests'][1]['arguments']['assign-to-variable'],
 	 'see the last individual on the stack');
     
     // Check the countback versions of function.
     same(reqs.last_individual_id(0), // cheat to examine
-	 reqs.structure()['requests'][1]['arguments']['assignToVariable'],
+	 reqs.structure()['requests'][1]['arguments']['assign-to-variable'],
 	 'same as no argument');
     same(reqs.last_individual_id(1), // cheat to examine
-	 reqs.structure()['requests'][0]['arguments']['assignToVariable'],
+	 reqs.structure()['requests'][0]['arguments']['assign-to-variable'],
 	 'count back one');
  
     // Still no edge.
@@ -231,18 +231,18 @@ var diff = mr_t.is_different_thing;
     // Add yet another individiual to the request stack (request #4)
     reqs.add_individual('GO:789');
     same(reqs.last_individual_id(), // cheat to examine
-	 reqs.structure()['requests'][3]['arguments']['assignToVariable'],
+	 reqs.structure()['requests'][3]['arguments']['assign-to-variable'],
 	 'see the last individual on the stack');
     
     // Check that our countback frame has shifted.
     same(reqs.last_individual_id(0), // cheat to examine
-	 reqs.structure()['requests'][3]['arguments']['assignToVariable'],
+	 reqs.structure()['requests'][3]['arguments']['assign-to-variable'],
 	 'after adding edge, same as no argument');
     same(reqs.last_individual_id(1), // cheat to examine
-	 reqs.structure()['requests'][1]['arguments']['assignToVariable'],
+	 reqs.structure()['requests'][1]['arguments']['assign-to-variable'],
 	 'after adding edge, count back one');
     same(reqs.last_individual_id(2), // cheat to examine
-	 reqs.structure()['requests'][0]['arguments']['assignToVariable'],
+	 reqs.structure()['requests'][0]['arguments']['assign-to-variable'],
 	 'after adding edge, count back two');
     
     // Check that out of bounds is okay.
@@ -316,7 +316,7 @@ var diff = mr_t.is_different_thing;
 			 "value": "v"
 		     }
 		 ],
-		 "modelId": "mid:123"
+		 "model-id": "mid:123"
 	     }
 	 },
 	 'model add-annotation okay');
@@ -331,7 +331,7 @@ var diff = mr_t.is_different_thing;
 			 "value": "v"
 		     }
 		 ],
-		 "modelId": "mid:123"
+		 "model-id": "mid:123"
 	     }
 	 },
 	 'model remove-annotation okay');
@@ -347,7 +347,7 @@ var diff = mr_t.is_different_thing;
 			 "value": "v"
 		     }
 		 ],
-		 "modelId": "mid:123"
+		 "model-id": "mid:123"
 	     }
 	 },
 	 'ind add-annotation okay');
@@ -363,7 +363,7 @@ var diff = mr_t.is_different_thing;
 			 "value": "v"
 		     }
 		 ],
-		 "modelId": "mid:123"
+		 "model-id": "mid:123"
 	     }
 	 },
 	 'ind remove-annotation okay');
@@ -381,7 +381,7 @@ var diff = mr_t.is_different_thing;
 			 "value": "v"
 		     }
 		 ],
-		 "modelId": "mid:123"
+		 "model-id": "mid:123"
 	     }
 	 },
 	 'fact add-annotation okay');
@@ -399,7 +399,7 @@ var diff = mr_t.is_different_thing;
 			 "value": "v"
 		     }
 		 ],
-		 "modelId": "mid:123"
+		 "model-id": "mid:123"
 	     }
 	 },
 	 'fact remove-annotation okay');

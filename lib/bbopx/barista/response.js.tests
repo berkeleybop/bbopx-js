@@ -21,7 +21,7 @@ var same = mr_t.is_same_atom;
 // Smells like a server exception (20140225).
 (function(){
 
-     var raw = {"message_type":"error",
+     var raw = {"message-type":"error",
 		"message":"Exception!",
 		"commentary":"blah"};
 
@@ -40,7 +40,7 @@ var same = mr_t.is_same_atom;
      var raw = {"uid":"foo",
 		"intention":"information",
 		"signal":"rebuild",
-		"message_type":"success",
+		"message-type":"success",
 		"message":"success",
 		"data":{"id":"gomodel:wb-GO_0043053",
 			"facts":[],

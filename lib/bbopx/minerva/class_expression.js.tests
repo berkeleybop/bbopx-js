@@ -69,7 +69,7 @@ function ll(x){
     var ce1 = new bbopx.minerva.class_expression(
 	'GO:123');
     var ce2 = new bbopx.minerva.class_expression(
-	{'type': 'Class', 'id': 'GO:123' });
+	{'type': 'class', 'id': 'GO:123' });
     var ce3 = new bbopx.minerva.class_expression(
 	new bbopx.minerva.class_expression('GO:123'));
 
@@ -92,7 +92,7 @@ function ll(x){
 	same(ce.property_id(), null, '['+i+'] no pid');
 	same(ce.property_label(), null, '['+i+'] no plbl');
 	
-	same(ce.structure(), {'type': 'Class', 'id': 'GO:123' },
+	same(ce.structure(), {'type': 'class', 'id': 'GO:123' },
 	     '['+i+'] correct trivial structure');
 
     });
@@ -116,20 +116,20 @@ function ll(x){
     same(ce.class_id(), null, '[ssvf] has null ID--nested');
     same(ce.class_label(), null, '[ssvf] has null label--nested');
     
-    same(ce.svf_class_expression().structure(), { type: 'Class', id: 'GO:123' },
+    same(ce.svf_class_expression().structure(), { type: 'class', id: 'GO:123' },
 	 '[ssvf] nested simple');
     same(ce.property_id(), 'RO:456', '[ssvf] has property id');
     same(ce.property_label(), 'RO:456', '[ssvf] had property lbl');
     
     same(ce.structure(),
 	 {
-	     'type': 'Restriction',
-	     'onProperty': {
-		 'type': 'ObjectProperty',
+	     'type': 'restriction',
+	     'property': {
+		 'type': 'property',
 		 'id': 'RO:456'
 	     },
-	     'someValuesFrom': {
-		 'type': 'Class',
+	     'svf': {
+		 'type': 'class',
 		 'id': 'GO:123'
 	     }
 	 },
@@ -161,13 +161,13 @@ function ll(x){
     
     same(ce.structure(),
     	 {
-	     'intersectionOf': [
+	     'intersection': [
     		 {
-    		     'type': 'Class',
+    		     'type': 'class',
     		     'id': 'GO:123'
     		 },
     		 {
-    		     'type': 'Class',
+    		     'type': 'class',
     		     'id': 'GO:456'
     		 }
     	     ]
@@ -202,20 +202,20 @@ function ll(x){
     
     same(ce.structure(),
 	 {
-	     "type": "Restriction",
-	     "onProperty": {
-		 "type": "ObjectProperty",
+	     "type": "restriction",
+	     "property": {
+		 "type": "property",
 		 "id": "RO:123"
 	     },
-	     "someValuesFrom": [
+	     "svf": [
 		 {
-		     "intersectionOf": [
+		     "intersection": [
 			 {
-			     "type": "Class",
+			     "type": "class",
 			     "id": "GO:123"
 			 },
 			 {
-			     "type": "Class",
+			     "type": "class",
 			     "id": "GO:456"
 			 }
 		     ]
@@ -237,20 +237,20 @@ function ll(x){
     var x = svf(intersection([cls('GO:123'), 'GO:456']), 'RO:789');
     same(x.structure(),
 	 {
-	     "type": "Restriction",
-	     "onProperty": {
-		 "type": "ObjectProperty",
+	     "type": "restriction",
+	     "property": {
+		 "type": "property",
 		 "id": "RO:789"
 	     },
-	     "someValuesFrom": [
+	     "svf": [
 		 {
-		     "intersectionOf": [
+		     "intersection": [
 			 {
-			     "type": "Class",
+			     "type": "class",
 			     "id": "GO:123"
 			 },
 			 {
-			     "type": "Class",
+			     "type": "class",
 			     "id": "GO:456"
 			 }
 		     ]
