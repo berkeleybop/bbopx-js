@@ -48,6 +48,7 @@ Format: 1.51
 
 Group: Minerva  {
 
+   File: class_expression.js  (minerva/class_expression.js)
    File: manager.js  (minerva/manager.js)
    File: requests.js  (minerva/requests.js)
    }  # Group: Minerva
