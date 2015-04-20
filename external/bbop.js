@@ -2017,7 +2017,7 @@ bbop.version.revision = "2.3.0";
  *
  * Partial version for this library: release (date-like) information.
  */
-bbop.version.release = "20150419";
+bbop.version.release = "20150420";
 /*
  * Package: logger.js
  * 
@@ -8759,8 +8759,6 @@ bbop.rest.manager.node = function(response_handler){
     // Grab an http client.
     this._http_client = require('http');
     this._url_parser = require('url');
-
-    console.log('AIGHT?');
 };
 bbop.core.extend(bbop.rest.manager.node, bbop.rest.manager);
 
@@ -8793,17 +8791,17 @@ bbop.rest.manager.node.prototype.update = function(callback_type){
     // Two things to do here: 1) collect data and 2) what to do with
     // it when we're done (create response).
     function on_connect(res){
-	console.log('STATUS: ' + res.statusCode);
-	console.log('HEADERS: ' + JSON.stringify(res.headers));
+	//console.log('STATUS: ' + res.statusCode);
+	//console.log('HEADERS: ' + JSON.stringify(res.headers));
 	res.setEncoding('utf8');
 	var raw_data = '';
 	res.on('data', function (chunk) {
-	    console.log('BODY: ' + chunk);
+	    //console.log('BODY: ' + chunk);
 	    raw_data = raw_data + chunk;
 	});
 	// Throw to .
 	res.on('end', function () {
-	    console.log('END with: ' + raw_data);
+	    //console.log('END with: ' + raw_data);
 	    var response = new anchor._response_handler(raw_data);
 	    if( response && response.okay() ){
 		anchor.apply_callbacks('success', [response, anchor]);
