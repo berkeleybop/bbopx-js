@@ -3,7 +3,9 @@
 ////
 //// Usage:
 ////  rhino -modules static/bbop.js -opt -1 -f bbopx/barista/response.js -f bbopx/barista/response.js.tests -f -
-
+////
+//// Usage (node, interactive debugging):
+//// : make bundle && TEST=lib/bbopx/barista/response.js.tests NODE_PATH=external:staging:lib/bbopx/minerva node -e "eval(require('fs').readFileSync(process.env.TEST)+''); require('repl').start('> ')"
 ////
 
 // Load bbopx.
@@ -68,6 +70,38 @@ var same = mr_t.is_same_atom;
      same(resp.evidence().length, 0, 'no evidence requested');
      
  })();
+
+// Real (truncated) data coming in (20150420).
+(function(){
+
+    var raw = {
+	"packet-id": "1346eb5701b2410",
+	"intention": "query",
+	"signal": "meta",
+	"message-type": "success",
+	"message": "success: 0",
+	"data": {
+	    "relations": 
+	    [
+		{
+		    "id": "BFO:0000050",
+		    "label": "part of",
+		    "relevant": true
+		},
+		{
+		    "id": "BFO:0000051",
+		    "label": "has part",
+		    "relevant": false
+		}
+	    ]
+	}
+    };
+    
+    var resp = new bbopx.barista.response(raw);
+
+     same(resp.relations().length, 2, 'two bits of ev');
+
+})();
 
 ///
 /// End unit testing.
