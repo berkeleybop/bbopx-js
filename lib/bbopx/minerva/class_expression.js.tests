@@ -161,6 +161,7 @@ function ll(x){
     
     same(ce.structure(),
     	 {
+	     'type': 'intersection',
 	     'intersection': [
     		 {
     		     'type': 'class',
@@ -209,6 +210,7 @@ function ll(x){
 	     },
 	     "svf": [
 		 {
+		     'type': 'intersection',
 		     "intersection": [
 			 {
 			     "type": "class",
@@ -244,6 +246,7 @@ function ll(x){
 	     },
 	     "svf": [
 		 {
+		     'type': 'intersection',
 		     "intersection": [
 			 {
 			     "type": "class",
