@@ -81,19 +81,21 @@ var same = mr_t.is_same_atom;
 	"message-type": "success",
 	"message": "success: 0",
 	"data": {
-	    "relations": 
-	    [
-		{
-		    "id": "BFO:0000050",
-		    "label": "part of",
-		    "relevant": true
-		},
-		{
-		    "id": "BFO:0000051",
-		    "label": "has part",
-		    "relevant": false
-		}
-	    ]
+	    "meta": {
+		"relations": 
+		[
+		    {
+			"id": "BFO:0000050",
+			"label": "part of",
+			"relevant": true
+		    },
+		    {
+			"id": "BFO:0000051",
+			"label": "has part",
+			"relevant": false
+		    }
+		]
+	    }
 	}
     };
     
