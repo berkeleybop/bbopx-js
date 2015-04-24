@@ -102,7 +102,7 @@ function ll(x){
 // Try SVF after the fact.
 (function(){
     
-    var ce = new bbopx.minerva.class_expression(null, true);    
+   var ce = new bbopx.minerva.class_expression(null, true);    
     ce.as_svf('GO:123', 'RO:456');
     
     same(ce.id().length == 36, true,
@@ -161,8 +161,8 @@ function ll(x){
     
     same(ce.structure(),
     	 {
-	     'type': 'intersection',
-	     'intersection': [
+    	     'type': 'intersection',
+    	     'expressions': [
     		 {
     		     'type': 'class',
     		     'id': 'GO:123'
@@ -211,7 +211,7 @@ function ll(x){
 	     "svf": [
 		 {
 		     'type': 'intersection',
-		     "intersection": [
+		     "expressions": [
 			 {
 			     "type": "class",
 			     "id": "GO:123"
@@ -228,41 +228,41 @@ function ll(x){
     
 })();
 
-// Toy REPL.
-(function(){
+// // Toy REPL.
+// (function(){
 
-    var union = bbopx.minerva.class_expression.union;
-    var intersection = bbopx.minerva.class_expression.intersection;
-    var svf = bbopx.minerva.class_expression.svf;
-    var cls = bbopx.minerva.class_expression.cls;
+//     var union = bbopx.minerva.class_expression.union;
+//     var intersection = bbopx.minerva.class_expression.intersection;
+//     var svf = bbopx.minerva.class_expression.svf;
+//     var cls = bbopx.minerva.class_expression.cls;
     
-    var x = svf(intersection([cls('GO:123'), 'GO:456']), 'RO:789');
-    same(x.structure(),
-	 {
-	     "type": "restriction",
-	     "property": {
-		 "type": "property",
-		 "id": "RO:789"
-	     },
-	     "svf": [
-		 {
-		     'type': 'intersection',
-		     "intersection": [
-			 {
-			     "type": "class",
-			     "id": "GO:123"
-			 },
-			 {
-			     "type": "class",
-			     "id": "GO:456"
-			 }
-		     ]
-		 }
-	     ]
-	 },
-	 '[static functions] correct nested structure');
+//     var x = svf(intersection([cls('GO:123'), 'GO:456']), 'RO:789');
+//     same(x.structure(),
+// 	 {
+// 	     "type": "restriction",
+// 	     "property": {
+// 		 "type": "property",
+// 		 "id": "RO:789"
+// 	     },
+// 	     "svf": [
+// 		 {
+// 		     'type': 'intersection',
+// 		     "expressions": [
+// 			 {
+// 			     "type": "class",
+// 			     "id": "GO:123"
+// 			 },
+// 			 {
+// 			     "type": "class",
+// 			     "id": "GO:456"
+// 			 }
+// 		     ]
+// 		 }
+// 	     ]
+// 	 },
+// 	 '[static functions] correct nested structure');
 
-})();
+// })();
 
 // // 
 // (function(){
