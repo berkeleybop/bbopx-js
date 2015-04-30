@@ -2459,7 +2459,8 @@ bbopx.minerva.request_set = function(user_token, model_id){
 		var ed_ann_req = new bbopx.minerva.request('edge',
 							   'add-annotation');
 		if( model_id ){ ed_ann_req.model(model_id); } // optional
-		ed_ann_req.fact(target_identifier);
+		var t = target_identifier;
+		ed_ann_req.fact(t[0], t[1], t[2]);
 		ed_ann_req.add_annotation('evidence', ev_ind_req.individual());
 		anchor.add(ed_ann_req, 'action');
 	    }
