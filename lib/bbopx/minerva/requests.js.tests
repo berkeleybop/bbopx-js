@@ -369,7 +369,7 @@ var diff = mr_t.is_different_thing;
 	 'ind remove-annotation okay');
     same(all_requests[4],
 	 {
-	     "entity": "fact",
+	     "entity": "edge",
 	     "operation": "add-annotation",
 	     "arguments": {
 		 "subject": "GO:123",
@@ -387,7 +387,7 @@ var diff = mr_t.is_different_thing;
 	 'fact add-annotation okay');
     same(all_requests[5],
 	 {
-	     "entity": "fact",
+	     "entity": "edge",
 	     "operation": "remove-annotation",
 	     "arguments": {
 		 "subject": "GO:123",
@@ -404,7 +404,7 @@ var diff = mr_t.is_different_thing;
 	 },
 	 'fact remove-annotation okay');
 
-});
+})();
 
 // TODO: Practicing another assembly.
 (function(){
@@ -427,7 +427,7 @@ var diff = mr_t.is_different_thing;
     var ob = reqs.add_individual('GO:789');
     var ed = reqs.add_fact([sb, ob, 'RO:123']);
 
-});
+})();
 
 // TODO: Probe different ways of doing a "real" example.
 (function(){
