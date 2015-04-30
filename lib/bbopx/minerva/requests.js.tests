@@ -540,11 +540,9 @@ var diff = mr_t.is_different_thing;
     //    "entity": "edge",
     //    "operation": "add-annotation",
     //    "arguments": {
-    //     "subject": [
-    //      "319752b9-24c6-4c7c-94f7-a0152843eecc",
-    //      "57b4fbb0-5df9-4ffa-9fd5-73c19b80aea3",
-    //      "part_of"
-    //     ],
+    //     "subject": "319752b9-24c6-4c7c-94f7-a0152843eecc",
+    //     "object": "57b4fbb0-5df9-4ffa-9fd5-73c19b80aea3",
+    //     "predicate": "part_of",
     //     "values": [
     //      {
     //       "key": "evidence",
@@ -558,8 +556,17 @@ var diff = mr_t.is_different_thing;
     // };
 
     var all_requests = reqs.structure()['requests'];
+
     same(all_requests.length, 9,
 	 'this takes 9 ops in total: 1 + 1 + 1 + 3 + 3');
+    
+    // Last has proper SOV.
+    diff(all_requests[8]['arguments']['subject'], null,
+	 'edge ann has sub');
+    diff(all_requests[8]['arguments']['object'], null,
+	 'edge ann has obj');
+    diff(all_requests[8]['arguments']['predicate'], null,
+	 'edge ann has pred');
 
 })();
 
