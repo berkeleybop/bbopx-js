@@ -406,6 +406,164 @@ var diff = mr_t.is_different_thing;
 
 })();
 
+// Let's take a look at evidence.
+(function(){
+
+    var reqs = new bbopx.minerva.request_set('utoken', 'mid:123');
+
+    // axon guidance receptor activity
+    var mf = reqs.add_individual('GO:0008046');
+    
+    // neurogenesis
+    var bp = reqs.add_individual('GO:0022008');
+    
+    // FACT!
+    var triple = reqs.add_fact([mf, bp, 'part_of']);
+    
+    // Evidence.
+    reqs.add_evidence('ECO:0000001', 'PMID:0000000', mf);
+    reqs.add_evidence('ECO:0000001', ['PMID:0000000'], triple);
+
+    // var target_request = {
+    //  "token": "utoken",
+    //  "intention": "action",
+    //  "requests": [
+    //   {
+    //    "entity": "individual",
+    //    "operation": "add",
+    //    "arguments": {
+    //     "expressions": [
+    //      {
+    //       "type": "class",
+    //       "id": "GO:0008046"
+    //      }
+    //     ],
+    //     "model-id": "mid:123",
+    //     "assign-to-variable": "319752b9-24c6-4c7c-94f7-a0152843eecc"
+    //    }
+    //   },
+    //   {
+    //    "entity": "individual",
+    //    "operation": "add",
+    //    "arguments": {
+    //     "expressions": [
+    //      {
+    //       "type": "class",
+    //       "id": "GO:0022008"
+    //      }
+    //     ],
+    //     "model-id": "mid:123",
+    //     "assign-to-variable": "57b4fbb0-5df9-4ffa-9fd5-73c19b80aea3"
+    //    }
+    //   },
+    //   {
+    //    "entity": "edge",
+    //    "operation": "add",
+    //    "arguments": {
+    //     "subject": "319752b9-24c6-4c7c-94f7-a0152843eecc",
+    //     "object": "57b4fbb0-5df9-4ffa-9fd5-73c19b80aea3",
+    //     "predicate": "part_of",
+    //     "model-id": "mid:123"
+    //    }
+    //   },
+    //   {
+    //    "entity": "individual",
+    //    "operation": "add",
+    //    "arguments": {
+    //     "expressions": [
+    //      {
+    //       "type": "class",
+    //       "id": "ECO:0000001"
+    //      }
+    //     ],
+    //     "model-id": "mid:123",
+    //     "assign-to-variable": "4f5fe9c3-ddda-4a1d-9da8-031535966529"
+    //    }
+    //   },
+    //   {
+    //    "entity": "individual",
+    //    "operation": "add-annotation",
+    //    "arguments": {
+    //     "individual": "4f5fe9c3-ddda-4a1d-9da8-031535966529",
+    //     "values": [
+    //      {
+    //       "key": "source",
+    //       "value": "PMID:0000000"
+    //      }
+    //     ],
+    //     "model-id": "mid:123"
+    //    }
+    //   },
+    //   {
+    //    "entity": "individual",
+    //    "operation": "add-annotation",
+    //    "arguments": {
+    //     "individual": "319752b9-24c6-4c7c-94f7-a0152843eecc",
+    //     "values": [
+    //      {
+    //       "key": "evidence",
+    //       "value": "4f5fe9c3-ddda-4a1d-9da8-031535966529"
+    //      }
+    //     ],
+    //     "model-id": "mid:123"
+    //    }
+    //   },
+    //   {
+    //    "entity": "individual",
+    //    "operation": "add",
+    //    "arguments": {
+    //     "expressions": [
+    //      {
+    //       "type": "class",
+    //       "id": "ECO:0000001"
+    //      }
+    //     ],
+    //     "model-id": "mid:123",
+    //     "assign-to-variable": "f8a6f1bf-6123-45cf-969d-da2405f9c8ca"
+    //    }
+    //   },
+    //   {
+    //    "entity": "individual",
+    //    "operation": "add-annotation",
+    //    "arguments": {
+    //     "individual": "f8a6f1bf-6123-45cf-969d-da2405f9c8ca",
+    //     "values": [
+    //      {
+    //       "key": "source",
+    //       "value": "PMID:0000000"
+    //      }
+    //     ],
+    //     "model-id": "mid:123"
+    //    }
+    //   },
+    //   {
+    //    "entity": "edge",
+    //    "operation": "add-annotation",
+    //    "arguments": {
+    //     "subject": [
+    //      "319752b9-24c6-4c7c-94f7-a0152843eecc",
+    //      "57b4fbb0-5df9-4ffa-9fd5-73c19b80aea3",
+    //      "part_of"
+    //     ],
+    //     "values": [
+    //      {
+    //       "key": "evidence",
+    //       "value": "f8a6f1bf-6123-45cf-969d-da2405f9c8ca"
+    //      }
+    //     ],
+    //     "model-id": "mid:123"
+    //    }
+    //   }
+    //  ]
+    // };
+
+    var all_requests = reqs.structure()['requests'];
+    same(all_requests.length, 9,
+	 'this takes 9 ops in total: 1 + 1 + 1 + 3 + 3');
+
+})();
+
+
 // TODO: Practicing another assembly.
 (function(){
   
