@@ -570,6 +570,21 @@ var diff = mr_t.is_different_thing;
 
 })();
 
+// Let's take a look at types.
+//(function(){
+
+    var reqs = new bbopx.minerva.request_set('utoken', 'mid:123');
+
+    reqs.remove_type_from_individual(
+	bbopx.minerva.class_expression.cls('SGD:S000003814'),
+	'gomodel_taxon_559292-5525a0fc0000001-SGD-S000003814-553ff9ed0000002'
+    );
+    
+    diff(reqs.structure()['requests'][0]['arguments']['individual'], null,
+    	 'define an individual in type request');
+
+//})();
+
 
 // TODO: Practicing another assembly.
 (function(){
