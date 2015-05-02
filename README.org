@@ -5,7 +5,7 @@
 
 * Overview
 
-  BBOPX JS the experimental wing of the [[http://github.com/kltm/bbop-js][BBOP JS]] library.
+  BBOPX JS the experimental wing of the [[http://github.com/berkeleybop/bbop-js][BBOP JS]] library.
 
   As this is an experimental library, although the code may be used,
   it will forever be pre-1.0.
