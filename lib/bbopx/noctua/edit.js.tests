@@ -1,0 +1,49 @@
+////
+//// Some unit testing for edit.js
+////
+//// Usage (rhino):
+//// : rhino -modules external/bbop.js -modules staging/bbopx.js -opt 1 -f lib/bbopx/noctua/edit.js -f lib/bbopx/noctua/edit.js.tests -f -
+////
+//// Usage (node, test only):
+//// : make bundle && NODE_PATH=external:staging node lib/bbopx/noctua/edit.js.tests
+////
+//// Usage (node, interactive debugging):
+//// : make bundle && TEST=lib/bbopx/noctua/edit.js.tests NODE_PATH=external:staging:lib/bbopx/noctua node -e "eval(require('fs').readFileSync(process.env.TEST)+''); require('repl').start('> ')"
+////
+
+// Load bbop.
+var bbop = require('bbop').bbop;
+//var bbopx = require('bbopx').bbopx;
+var bbopx = require('bbopx');
+var mr_t = new bbop.test();
+
+// Generic testers.
+var same = mr_t.is_same_thing;
+var diff = mr_t.is_different_thing;
+
+//
+function ll(x){
+    if( x && x.structure ){
+	console.log(JSON.stringify(x.structure(), null, ' '));
+    }else{
+	console.log(JSON.stringify(x, null, ' '));
+    }
+}
+
+///
+/// Start unit testing.
+///
+
+// Test nothing.
+(function(){
+
+    same(1, (1+0), 'same');
+
+})();
+
+///
+/// End unit testing.
+///
+
+// Final report.
+mr_t.report();
