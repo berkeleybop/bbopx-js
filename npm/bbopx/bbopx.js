@@ -4075,64 +4075,19 @@ if ( typeof bbopx == "undefined" ){ var bbopx = {}; }
 if ( typeof bbopx.noctua == "undefined" ){ bbopx.noctua = {}; }
 
 /*
- * Function: type_to_minimal
- *
- * Return a single-line text-only one-level representation of a type.
- */
-bbopx.noctua.type_to_minimal = function(in_type, aid){
-
-    var ret = '[???]';
-    
-    var t = in_type.type();
-    var f = in_type.frame();
-
-    if( t == 'class' ){
-	ret = in_type.class_label();
-    }else if( t == 'union' || t == 'intersection' ){
-	ret = t + '[' + f.length + ']';
-    }else{
-	// SVF a little harder.
-	var ctype = in_type.category();
-	var ctype_r = aid.readable(ctype);
-
-	// Probe it a bit.
-	var ce = in_type.svf_class_expression();
-	var cetype = ce.type();
-
-	var inner_lbl = '???';
-	if( cetype == 'class' ){
-	    inner_lbl = ce.class_label();
-	}else if( cetype == 'union' || cetype == 'intersection' ){
-	    var cef = ce.frame();
-	    inner_lbl = cetype + '[' + cef.length + ']';
-	}else{
-	    inner_lbl = '[SVF]';
-	}
-
-	//var cr = aid.readable(cat);
-	ret = ctype_r + '(' + inner_lbl + ')';
-    }
-
-    return ret;
-};
-
-/*
  * Function: type_to_span
  *
  * Essentially, minimal rendered as a usable span, with a color
  * option.
  */
-bbopx.noctua.type_to_span = function(in_type, aid, color_p){
-
-    var min = bbopx.noctua.type_to_minimal(in_type, aid);
+bbopx.noctua.type_to_span = function(in_type, color){
 
     var text = null;
-    if( color_p ){
-	text = '<span ' +
-	    'style="background-color: ' + aid.color(in_type.category()) + ';" ' +
-	    'alt="' + min + '" ' +
-	    'title="' + min +'">' +
-	    min + '</span>';
+
+    var min = in_type.to_string();
+    if( color ){
+	text = '<span ' + 'style="background-color: ' + color + ';" ' +
+	    'alt="' + min + '" ' + 'title="' + min +'">' + min + '</span>';
     }else{
 	text = '<span alt="' + min + '" title="' + min +'">' + min + '</span>';
     }
@@ -4154,7 +4109,7 @@ bbopx.noctua.type_to_full = function(in_type, aid){
 
     var t = in_type.type();
     if( t == 'class' ){ // if simple, the easy way out
-	text = bbopx.noctua.type_to_minimal(in_type, aid);
+	text = in_type.to_string();
     }else{
 	// For everything else, we're gunna hafta do a little
 	// lifting...
@@ -4214,11 +4169,6 @@ bbopx.noctua.type_to_full = function(in_type, aid){
 	    text = cache.join('');
 	}
     }
-
-
-    // var min = bbopx.noctua.type_to_minimal(in_type, aid);
-    // var exp = bbopx.noctua.type_to_expanded(in_type, aid);
-    // var text = '<span alt="' + exp + '" title="' + exp +'">' + min + '</span>';
 
     return text;
 };
@@ -5406,19 +5356,55 @@ bbopx.noctua.widgets.render_node_stack = function(enode, aid){
     var enode_stack_table = new bbop.html.tag('table',
 					      {'class':'bbop-mme-stack-table'});
 
-    // Add type/color information.
-    var std_types = enode.types();
-    var inf_types = enode.get_unique_inferred_types();
-    function _add_table_row(item, inferred_p){
-	var out_rep = bbopx.noctua.type_to_span(item, aid);
-	if( inferred_p ){ out_rep = '[' + out_rep + ']'; }
-	var trstr = '<tr class="bbop-mme-stack-tr" ' +
-		'style="background-color: ' + aid.color(item.category()) +
+    // General function for adding type information to stack.
+    function _add_table_row(item, color, prefix, suffix){
+	//var rep_color = aid.color(item.category());
+	var out_rep = bbopx.noctua.type_to_span(item, color);
+	if( prefix ){ out_rep = prefix + out_rep; }
+	if( suffix ){ out_rep = out_rep + suffix; }
+	var trstr = null;
+	if( color ){
+	    trstr = '<tr class="bbop-mme-stack-tr" ' +
+		'style="background-color: ' + color +
 		';"><td class="bbop-mme-stack-td">' + out_rep + '</td></tr>';   
+	}else{
+	    trstr = '<tr class="bbop-mme-stack-tr">' +
+		'<td class="bbop-mme-stack-td">' + out_rep + '</td></tr>';   
+	}
 	enode_stack_table.add_to(trstr);
     }
-    each(inf_types, function(item){ _add_table_row(item, true); });
+
+    // Inferred types first.
+    var inf_types = enode.get_unique_inferred_types();
+    each(inf_types, function(item){ _add_table_row(item, null, '[', ']'); });
+    // Editable types next.
+    var std_types = enode.types();
     each(std_types, function(item){ _add_table_row(item); });
+
+    // Now we trick our way through to adding the types of the
+    // subgraphs.
+    var subgraph = enode.subgraph();
+    if( subgraph ){
+	var p_edges = subgraph.get_parent_edges(enode.id());
+	// Put an order on the edges.
+	p_edges.sort(function(e1, e2){
+	    return aid.priority(e1.relation()) - aid.priority(e2.relation());
+	});
+	each(p_edges, function(p_edge){
+	    // Edge info.
+	    var rel = p_edge.relation();
+	    var rel_color = aid.color(rel);
+	    var rel_readable = aid.readable(rel);
+	    // Get node.
+	    var p_obj_id = p_edge.object_id();
+	    var p_node = subgraph.get_node(p_obj_id);
+
+	    // Add the edge/node combos to the table.
+	    each(p_node.types(), function(p_type){
+		_add_table_row(p_type, rel_color, rel_readable + '(', ')');
+	    });
+	});
+    }
 
     // Inject meta-information if extant.
     var anns = enode.annotations();
