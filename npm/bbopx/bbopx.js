@@ -1553,7 +1553,7 @@ bbopx.minerva.manager = function(barista_location, namespace, user_token,
      * Returns:
      *  n/a
      */
-    anchor.remove_model_annotation =function(model_id, key, value){
+    anchor.remove_model_annotation = function(model_id, key, value){
 
 	var reqs = new bbopx.minerva.request_set(anchor.user_token(), model_id);
 	reqs.remove_annotation_from_model(key, value);
@@ -5125,7 +5125,7 @@ bbopx.noctua.widgets.repaint_info = function(ecore, aid, info_div){
     // Try and get a title out of the model.
     var mtitle = '???';
     var tanns = ecore.get_annotations_by_key('title');
-    if( tanns && tanns[0] ){ mtitle = tanns[0].value('title'); }
+    if( tanns && tanns.length == 1 ){ mtitle = tanns[0].value(); }
 
     var str_cache = [
 	'<dl class="dl-horizontal">',
