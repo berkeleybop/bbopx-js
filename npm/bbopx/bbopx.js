@@ -2017,7 +2017,9 @@ bbopx.minerva.request = function(entity, operation){
     anchor.add_annotation = function(key, vals){
 
 	// Convert val to a list if necessary.
-	if( what_is(vals) == 'string' ){ vals = [vals]; }
+	if( what_is(vals) == 'string' || what_is(vals) == 'number' ){
+	    vals = [vals];
+	}
 	if( what_is(vals) != 'array' ){ throw new Error('unknown argument'); }
 
 	// Our list of values must be defined if we go this way.
