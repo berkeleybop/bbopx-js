@@ -5447,15 +5447,20 @@ bbopx.noctua.widgets.render_node_stack = function(enode, aid){
  *
  * Add a new enode.
  */
-bbopx.noctua.widgets.add_enode = function(ecore, enode, aid, graph_div){
+bbopx.noctua.widgets.add_enode = function(ecore, enode, aid, graph_div,
+					  left, top){
 
     var each = bbop.core.each;
 
+    // See whether or not we need to place the nodes with style.
+    var style_str = '';
+    if( left != null && top != null ){
+	style_str = 'top: ' + top + 'px; ' + 'left: ' + left + 'px;';
+    }
+    //ll('style: ' + style_str);
+
     // Node as table nested into bbop.html div.
     var div_id = ecore.get_node_elt_id(enode.id());
-    var style_str = 'top: ' + enode.y_init() + 'px; ' + 
-	'left: ' + enode.x_init() + 'px;';
-    //ll('style: ' + style_str);
     var w = new bbop.html.tag('div',
 			      {'id': div_id,
 			       'class': 'demo-window',
