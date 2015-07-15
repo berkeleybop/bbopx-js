@@ -6338,6 +6338,44 @@ bbopx.noctua.widgets.edit_annotations_modal = function(annotation_config,
 		// For every one found, assemble the actual display
 		// string while storing the ids for later use.
 		var kval = ann.value();
+		if( kval.split('http://').length == 2 ){ // cheap link
+		    kval = '<a href="' + kval + '">' + kval + '</a>';
+		}
+		// However, evidence annotations are very different
+		// for us now, and we need to dig out the guts from
+		// elsewhere.
+		if( ann.key() == 'evidence' && ann.value_type() == 'IRI' ){
+
+		    // Setup a dummy incase we fail.
+		    kval = '???';
+		    var ref_val = ann.value();
+		    var ref_ind = ecore.get_node(ref_val);
+		    if( ! ref_ind ){ // living free or in a referenced set
+			ref_ind =
+			    entity.get_referenced_individual_by_id(ref_val);
+		    }
+		    if( ref_ind ){
+			kval = '';
+			// Collect class expressions.
+			var c_cache = [];
+			each(ref_ind.types(), function(ce){
+			    c_cache.push(ce.to_string());
+			});
+			kval += c_cache.join('/');
+			// Collect annotations.
+			each(ref_ind.annotations(), function(ref_ann){
+			    var rav = ref_ann.value();
+			    if( rav.split('PMID:').length == 2 ){ // link pmids silly
+				var pmid = rav.split('PMID:')[1];
+				rav = '<a href="http://pmid.us/' + pmid + '">'
+				    + 'PMID:' + pmid + '</a>';
+			    }
+			    kval += '; ' + ref_ann.key() + ': ' + rav;
+			});
+		    }
+		}
+
+		// And the annotation id for the key.
 		var kid = bbop.core.uuid();
 		
 		// Only add to action set if mutable.
